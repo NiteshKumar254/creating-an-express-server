@@ -9,7 +9,7 @@ const app=express(); // express app object
 //      next();
 // });
 app.use("/test",(req,res)=>{
-    res.send("Hello from the  testtttt serverrr");
+    res.send("Hello from the  teesttttt serverrr");
 });
 
 app.use("/hello",(req,res)=>{
