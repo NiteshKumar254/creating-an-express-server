@@ -700,6 +700,35 @@
 // })
 
 // creating sxpress server
+// const express= require("express");
+// const connectDB=require("./config/database");
+// const app=express(); // express app object 
+// const User=require("./models/user");
+// // dynamically storing data
+// //___________________________________________
+// app.use(express.json());
+// app.post("/signup", async(req,res)=>{
+//     //creating A NEW instance OF THE USER MODEL
+//     const user=new User(req.body);
+//     //____________________________________________________
+//     try{
+//     await user.save();
+//     res.send("User added successfully");
+//     }
+//     catch(err){
+//         res.status(502).send("error saving the user:"+err.message);
+//     }
+// });
+// connectDB().then(()=>{
+//     console.log("db connection established..");
+//     app.listen(3000, ()=> {
+//     console.log("server is successfully listening on port 3000");
+// });
+// }).catch(err=>{
+//      console.log("db connection cant established..");
+// })
+
+// creating sxpress server
 const express= require("express");
 const connectDB=require("./config/database");
 const app=express(); // express app object 
@@ -719,6 +748,49 @@ app.post("/signup", async(req,res)=>{
         res.status(502).send("error saving the user:"+err.message);
     }
 });
+// get user by email
+app.get("/user",async (req,res)=>{
+    const userEmail=req.body.emailId;
+    try{
+        const user=await User.find({emailId:userEmail});
+        if (user.length===0){
+            res.status(403).send("no user found");
+        }
+        else {
+        res.send(user);
+        }
+    }
+    catch{
+        res.status(400).send("something went wrong");
+    }
+})
+// feed api -get all users from db
+app.get("/feed", async(req,res)=>{
+    try{
+     const users=await User.find({});
+      res.send(users);
+    }
+   catch{
+    res.status(406).send("some issue");
+   }
+
+
+})
+
+//delete user by id
+app.delete("/user",async (req,res)=>{
+    const userId=req.body.userId;
+    try{
+        const user=await User.findByIdAndDelete(userId);
+        res.send("user deleted successfully");
+    }
+    catch{
+        res.status(403).send("someting went wrong");
+    }
+});
+
+// //update data 
+// app.patch()
 connectDB().then(()=>{
     console.log("db connection established..");
     app.listen(3000, ()=> {
