@@ -89,6 +89,139 @@ app.get("/posts/:postId/comments/:commentId", (req, res) => {
   res.send(`Post ID: ${postId}, Comment ID: ${commentId}`);
 });
 
+//Handling multiple route handlers
+//next()
+//next fn and error with res.send()
+//works similar for all like get , post , use...
+
+
+//nothing is sent, server keeps waiting
+// app.use("/learn", 
+//     (req,res,next)=>{
+//     //      next();
+//     // res.send("worked req1");
+//     console.log("worked well1");  
+// });
+
+
+
+// app.use("/learn", 
+//     (req,res)=>{
+//     res.send("worked req1");
+//     console.log("worked well1"); 
+// },
+//  (req,res)=>{
+//     res.send("worked req 2");
+//     console.log("worked well2"); 
+// });
+
+// app.use("/learn", 
+//     (req,res,next)=>{
+//     res.send("worked req1");
+//     console.log("worked well1"); 
+//     next();
+// },
+//  (req,res)=>{
+//      console.log("worked well2"); 
+//     res.send("worked req 2");
+   
+// });
+
+// app.use("/learn", 
+//     (req,res,next)=>{
+//     // res.send("worked req1");
+//     console.log("worked well1"); 
+//     next();
+// },
+//  (req,res)=>{
+//      console.log("worked well2"); 
+//     res.send("worked req 2");
+   
+// });
+
+
+// app.use("/learn", 
+//     (req,res,next)=>{
+//          next();
+//     res.send("worked req1");
+//     console.log("worked well1"); 
+   
+// },
+//  (req,res)=>{
+//      console.log("worked well2"); 
+//     res.send("worked req 2");
+// });
+
+// app.use("/learn", 
+//     (req,res,next)=>{
+//          next();
+//     res.send("worked req1");
+//     console.log("worked well1"); 
+// },
+//  (req,res,next)=>{
+//      console.log("worked well2"); 
+//     res.send("worked req 2");
+//     next();
+// });
+
+//in array form:
+// app.use("/route",[rh1,rh2,rh3,rh4])
+// app.use("/route",[rh1,rh2],rh3,rh4])
+// app.use("/route",rh1,rh2,[rh3],rh4])
+
+// app.use("/learn", 
+//     [(req,res,next)=>{
+//          next();
+//     // res.send("worked req1");
+//     console.log("worked well1"); 
+   
+// },
+//  (req,res,next)=>{
+//      console.log("worked well2"); 
+//     // res.send("worked req 2"); 
+//       next();
+// },
+// (req,res,next)=>{
+//      console.log("worked well3"); 
+//     res.send("worked req 3");
+   
+// }]
+// );
+
+app.use("/learn", 
+    [(req,res,next)=>{
+         next();
+    // res.send("worked req1");
+    console.log("worked well1"); 
+   
+},
+ (req,res,next)=>{
+     console.log("worked well2"); 
+    // res.send("worked req 2"); 
+      next();
+}],
+(req,res,next)=>{
+     console.log("worked well3"); 
+    res.send("worked req 3");
+   
+}
+);
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
 
 
 
