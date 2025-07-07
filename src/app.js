@@ -207,21 +207,96 @@ app.use("/learn",
 }
 );
 
+//same routes can be written with different res.rev separately
+// app.use("/apps",(req,res)=>{
+//     console.log("app working");
+//     res.send("app worked");
+// });
+// app.use("/apps",(req,res)=>{
+//     console.log("app2 working");
+//     res.send("app2 worked");
+// });
+
+// app.use("/apps",(req,res,next)=>{
+//     console.log("app working");
+//     res.send("app worked");
+//     next();
+// });
+// app.use("/apps",(req,res)=>{
+//     console.log("app 2working");
+//     res.send("app 2worked");
+// });
+
+// app.use("/apps",(req,res,next)=>{
+//     console.log("app working");
+//     // res.send("app worked");
+//     next();
+// });
+// app.use("/apps",(req,res)=>{
+//     console.log("app 2 working");
+//     res.send("app 2 worked");
+// });
+
+// app.use("/apps",(req,res,next)=>{
+//     console.log("app working");
+//     res.send("app worked");
+//     next();
+// });
+// app.use("/apps",(req,res,next)=>{
+//     console.log("app 2 working");
+//     // res.send("app 2 worked");
+//     next();
+// });
+
+//Handle auth midlleare for all requests
+// app.use("/admin", (req,res,next)=>{
+//     console.log("autorization started");
+//     const token="nitesh";
+//     const isAdminAuthorized= token=== "niitesh";
+//     if (!isAdminAuthorized){
+//         res.status(401).send("unauthorized request");
+//     }
+//     else{
+//         next();
+//     }
+// });
+// app.get("/about",(req,res)=>{
+//     res.send("about data sent");
+// })
+
+// app.get("/admin/getAllData", (req,res)=>{
+//     res.send("all user data sent");
+// });
+
+// app.get("/admin/deleteUser", (req,res)=>{
+//     res.send("a user data deleted");
+// });
+
+//middleware use from other file - clean codes
+const {adminAuth,userAuth}=require("./middlewares/auth");
+//method 1
+app.use("/admin",adminAuth);
+app.get("/admin/getAllData", (req,res)=>{
+    res.send("all user data sent");
+});
+app.get("/admin/deleteUser", (req,res)=>{
+    res.send("a user data deleted");
+});
+//methpd 2:
+app.use("/userrr",userAuth, (req,res)=>{
+   res.send("autghorized user");
+}
+);
+
+
+
+
+
 
 
 
 
  
-
-
-
-
-
-
-
-
-
-
 
 
 
