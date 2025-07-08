@@ -735,19 +735,74 @@ const app=express(); // express app object
 const User=require("./models/user");
 // dynamically storing data
 //___________________________________________
+const {validateSignUpData}=require("./utils/validation");
+const bcrypt=require("bcrypt");
 app.use(express.json());
+
 app.post("/signup", async(req,res)=>{
-    //creating A NEW instance OF THE USER MODEL
-    const user=new User(req.body);
-    //____________________________________________________
-    try{
+try{
+    //validation of data 
+    validateSignUpData(req);
+//encrypt password
+const {firstName,lastName,emailId,password}=req.body;
+const passwordHash=await bcrypt.hash(password,10);
+console.log(passwordHash);
+
+//creating new instance of user model
+    // const user=new User(req.body);
+    const user=new User({
+        firstName,
+        lastName,
+        emailId,
+        password:passwordHash,
+    }); 
     await user.save();
     res.send("User added successfully");
     }
     catch(err){
-        res.status(502).send("error saving the user:"+err.message);
+        res.status(502).send("error:"+err.message);
     }
 });
+
+//___________________________________________
+//password validation
+app.post("/login", async(req,res)=>{
+    try{
+        const{emailId,password}=req.body;
+     const user=await User.findOne({emailID:emailId});
+     if(!user){
+        // throw new Error("email id not present in db");
+        throw new Error("invalid credentils");
+     }
+     const isPasswordValid=await bcrypt.compare(password,user.password);
+     if (isPasswordValid){
+        res.send("Login success");
+     }
+     else {
+        // throw new Error("Pass is not correct");
+          throw new Error("invalid credentils");
+
+     }
+    }
+    catch(err){
+        res.status(400).send("error: "+err.message);
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // get user by email
 app.get("/user",async (req,res)=>{
     const userEmail=req.body.emailId;
