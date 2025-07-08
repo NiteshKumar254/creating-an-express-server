@@ -789,8 +789,35 @@ app.delete("/user",async (req,res)=>{
     }
 });
 
-// //update data 
-// app.patch()
+// //update data  OF USER
+ app.patch("/user",async(req,res)=>{
+    const userId=req.body.Id;
+    const data=req.body;
+   
+    try{
+         const ALLOWED_UPDATES = [
+          "photoURL",
+          "about",
+          "gender",
+          "skills",
+          "age",
+      ];
+      const isUpdateAllowed = Object.keys(data).every((k) => ALLOWED_UPDATES.includes(k));
+      if (!isUpdateAllowed) {
+          throw new Error("Update Not Allowed");
+      }
+        const user=await User.findByIdAndUpdate({_id:userId},data,{
+            returnDocument:"after",
+           runValidators: true
+
+        });
+        console.log(user);
+        res.send("updated successfully");
+    }
+    catch(err){
+        res.status(400).send("update failed:"+ err.message);
+    }
+ });
 connectDB().then(()=>{
     console.log("db connection established..");
     app.listen(3000, ()=> {
